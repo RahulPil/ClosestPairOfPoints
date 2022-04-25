@@ -3,9 +3,9 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class ClosestPairOfPoints {
-    private PointXComparator sortX;
-    private PointYComparator sortY;
-    private String fileName;
+    private final PointXComparator sortX;
+    private final PointYComparator sortY;
+    private final String fileName;
     private Point[] points;
 
     public ClosestPairOfPoints(String fileName) {
@@ -16,15 +16,12 @@ public class ClosestPairOfPoints {
 
     public void findClosestPair() {
         initializeData();
-//        for (int i = 0; i < points.length; i++) {
-//            System.out.println(points[i].getX() + ", " + points[i].getY());
-//        }
         closestPair(0, points.length - 1);
     }
 
     public double closestPair(int start, int end) {
         double closest = Integer.MAX_VALUE;
-        double distance = 0;
+        double distance;
         if (end - start < 3) {
             for (int i = start; i <= end - 1; i++) {
                 for (int j = i + 1; j <= end; j++) {
@@ -40,17 +37,14 @@ public class ClosestPairOfPoints {
             double closestRight = closestPair(mid + 1, end);
             double l = points[mid].getX();
             double delta = Math.min(closestLeft, closestRight);
-            ArrayList<Point> deltaRange = new ArrayList<Point>();
+            ArrayList<Point> deltaRange = new ArrayList<>();
             for (int i = start; i <= end; i++) {
                 if (points[i].getX() <= l + delta && points[i].getX() >= l - delta) {
                     deltaRange.add(points[i]);
                 }
             }
 
-            Collections.sort(deltaRange, sortY);
-//            for (Point p : deltaRange) {
-//                System.out.println(p.getX() + ", " + p.getY());
-//            }
+            deltaRange.sort(sortY);
             Point from;
             Point to;
             for (int i = 0; i < deltaRange.size() - 1; i++) {
