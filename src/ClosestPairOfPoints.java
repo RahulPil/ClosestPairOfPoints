@@ -20,14 +20,15 @@ public class ClosestPairOfPoints {
     }
 
     public double closestPair(int start, int end) {
-        double closest = Integer.MAX_VALUE;
+        double delta;
         double distance;
         if (end - start < 3) {
+            delta = Integer.MAX_VALUE;
             for (int i = start; i <= end - 1; i++) {
                 for (int j = i + 1; j <= end; j++) {
                     distance = Math.sqrt(Math.pow((points[i].getX() - points[j].getX()), 2) + Math.pow((points[i].getY() - points[j].getY()), 2));
-                    if (distance < closest) {
-                        closest = distance;
+                    if (distance < delta) {
+                        delta = distance;
                     }
                 }
             }
@@ -36,14 +37,13 @@ public class ClosestPairOfPoints {
             double closestLeft = closestPair(start, mid);
             double closestRight = closestPair(mid + 1, end);
             double l = points[mid].getX();
-            double delta = Math.min(closestLeft, closestRight);
+            delta = Math.min(closestLeft, closestRight);
             ArrayList<Point> deltaRange = new ArrayList<>();
             for (int i = start; i <= end; i++) {
                 if (points[i].getX() <= l + delta && points[i].getX() >= l - delta) {
                     deltaRange.add(points[i]);
                 }
             }
-
             deltaRange.sort(sortY);
             Point from;
             Point to;
@@ -53,14 +53,16 @@ public class ClosestPairOfPoints {
                 for (int j = i + 1; j < Math.min(7, deltaRange.size()); j++) {
                     to = deltaRange.get(j);
                     distance = Math.sqrt(Math.pow((from.getX() - to.getX()), 2) + Math.pow((from.getY() - to.getY()), 2));
-                    if (distance < closest) {
-                        closest = distance;
+                    //System.out.println("(" + from.getX() + ", " + from.getY() + ") " + distance + " (" + to.getX() + ", " + to.getY() + ")");
+                    if (distance < delta) {
+                        //System.out.println("New closest!!");
+                        delta = distance;
                     }
                 }
             }
         }
-        System.out.println("D[" + start + "," + end + "]: " + closest);
-        return closest;
+        System.out.printf("D[" + start + "," + end + "]: " + "%.4f %n", delta);
+        return delta;
     }
 
     public void initializeData() {
