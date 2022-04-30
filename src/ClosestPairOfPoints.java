@@ -2,23 +2,47 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+/**
+ * Class to represent Closest Pair Of Points algorithm
+ * The ClosestPairOfPoints object is represented by a PointXComparator,
+ * PointYComparator, string name of a file, and stores an array of points
+ * Functionality includes allocating memory for points through file input and
+ * finds the closest pair of points given a partition of points
+ */
 public class ClosestPairOfPoints {
     private final PointXComparator sortX;
     private final PointYComparator sortY;
     private final String fileName;
     private Point[] points;
 
+    /**
+     * constructor
+     * pre: none
+     * post: instance variables are initialized
+     */
     public ClosestPairOfPoints(String fileName) {
         sortX = new PointXComparator();
         sortY = new PointYComparator();
         this.fileName = fileName;
     }
 
+    /**
+     * findClosestPair
+     * pre: none
+     * post: data in points array is initialized and closest pairs of points are found
+     */
     public void findClosestPair() {
         initializeData();
         closestPair(0, points.length - 1);
     }
 
+    /**
+     * closestPair
+     * pre: points has been allocated memory and
+     *      all points have been added to the points array
+     * post: returns the distance of the closest pair of points
+     *       for the partition of points sent as parameters into the function
+     */
     public double closestPair(int start, int end) {
         double delta;
         double distance;
@@ -65,6 +89,11 @@ public class ClosestPairOfPoints {
         return delta;
     }
 
+    /**
+     * initializeData
+     * pre: file holding points data is available in directory, array holding points is declared
+     * post: points array is initialized
+     */
     public void initializeData() {
         File file = new File(fileName);
         try {
